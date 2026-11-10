@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gather Social</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────────── -->
+<header>
+  <div class="brand">✦ Gather Social</div>
+  <nav>
+    <a href="/" id="navHome">Home</a>
+    <a href="#" id="navProfile" style="display:none">Profile</a>
+    <a href="#" id="navLogin">Login</a>
+    <a href="#" id="navLogout" style="display:none">Logout</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero" id="heroSection">
+    <span class="pill">YOUR COMMUNITY SPACE</span>
+    <h1>Share ideas. Find your people.</h1>
+    <p>A friendly mini social network for updates, conversations and connections. Create an account to publish, like, comment and follow.</p>
+    <div class="row gap-10">
+      <button onclick="showAuth('register')">Join the community</button>
+      <button class="btn-outline" onclick="showAuth('login')">Sign in</button>
+    </div>
+  </section>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- Auth Panel -->
+  <section class="card auth-card" id="authPanel" style="display:none">
+    <div class="auth-header">
+      <h2 id="authTitle">Sign in</h2>
+      <button class="btn-ghost close-btn" onclick="closeAuth()" aria-label="Close">✕</button>
+    </div>
+    <form id="authForm" novalidate>
+      <div id="nameBox" style="display:none">
+        <label for="authName">Your name</label>
+        <input id="authName" name="name" placeholder="Alex Morgan" autocomplete="name" />
+      </div>
+      <label for="authEmail">Email</label>
+      <input id="authEmail" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
+      <label for="authPassword">Password <span class="muted">(8+ characters)</span></label>
+      <input id="authPassword" name="password" type="password" minlength="8" required placeholder="••••••••" />
+      <button type="submit" id="authSubmit">Continue</button>
+    </form>
+    <p class="auth-switch muted" id="authSwitch"></p>
+  </section>
+
+  <!-- Profile view -->
+  <section id="profileSection" style="display:none">
+    <div class="card profile-card">
+      <div class="profile-avatar" id="profileAvatar">👤</div>
+      <div class="profile-info">
+        <h2 id="profileName">—</h2>
+        <p class="muted" id="profileBio">No bio yet.</p>
+        <div class="profile-stats">
+          <span><b id="profilePosts">0</b> posts</span>
+          <span><b id="profileFollowers">0</b> followers</span>
+          <span><b id="profileFollowing">0</b> following</span>
+        </div>
+        <div class="row gap-10" style="margin-top:12px">
+          <button id="profileFollowBtn" style="display:none" onclick="toggleFollowProfile()">Follow</button>
+          <button class="btn-outline" id="profileEditBtn" style="display:none" onclick="showEditProfile()">Edit profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit profile form -->
+    <div class="card" id="editProfileCard" style="display:none; margin-top:14px">
+      <h3>Edit profile</h3>
+      <label>Display name</label>
+      <input id="editName" placeholder="Your name" />
+      <label>Bio <span class="muted">(up to 300 characters)</span></label>
+      <textarea id="editBio" rows="3" maxlength="300" placeholder="Tell people about yourself…"></textarea>
+      <label>Avatar emoji</label>
+      <input id="editAvatar" placeholder="e.g. 🦋 or 🌍" maxlength="8" style="max-width:100px" />
+      <div class="row gap-10" style="margin-top:4px">
+        <button onclick="saveProfile()">Save changes</button>
+        <button class="btn-outline" onclick="document.getElementById('editProfileCard').style.display='none'">Cancel</button>
+      </div>
+    </div>
+
+    <h3 style="margin:22px 0 10px" id="profilePostsHeading">Posts</h3>
+    <section id="profileFeed" class="feed-list"></section>
+    <button class="btn-outline back-btn" onclick="showHome()" style="margin-top:16px">← Back to home feed</button>
+  </section>
+
+  <!-- Main feed layout -->
+  <div id="homeSection">
+    <div class="home-layout">
+
+      <!-- Left sidebar: compose + people -->
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Write a post</h3>
+          <textarea id="postText" rows="4" maxlength="1000" placeholder="What's on your mind? (1–1000 chars)"></textarea>
+          <div class="char-counter"><span id="charCount">0</span> / 1000</div>
+          <button onclick="publish()" id="publishBtn">Publish</button>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3>People to discover</h3>
+          <div id="people" class="muted">Loading…</div>
+        </div>
+      </aside>
+
+      <!-- Feed -->
+      <section class="feed-col">
+        <div class="feed-tabs">
+          <button class="tab active" id="tabAll" onclick="switchTab('all')">All posts</button>
+          <button class="tab" id="tabFollowing" onclick="switchTab('following')">Following</button>
+          <button class="tab" id="tabLiked" onclick="switchTab('liked')">Liked</button>
+        </div>
+        <div id="feed" class="feed-list">
+          <p class="muted loading-msg">Loading community feed…</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>Built for CodeAlpha Full Stack Development Internship · Educational MVP</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
